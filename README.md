@@ -1,4 +1,5 @@
 # keepcoding-devops-liberando-productos-practica-final
+## RafaelTorices
 
 ## Objetivo
 
@@ -207,8 +208,10 @@ A partir del ejemplo inicial descrito en los apartados anteriores es necesario r
 
 Los requirimientos son los siguientes:
 
+# OK - HECHO
 - Añadir por lo menos un nuevo endpoint a los existentes `/` y `/health`, un ejemplo sería `/bye` que devolvería `{"msg": "Bye Bye"}`, para ello será necesario añadirlo en el fichero [src/application/app.py](./src/application/app.py)
 
+# OK - HECHO
 - Creación de tests unitarios para el nuevo endpoint añadido, para ello será necesario modificar el [fichero de tests](./src/tests/app_test.py)
 
 - Opcionalmente creación de helm chart para desplegar la aplicación en Kubernetes, se dispone de un ejemplo de ello en el laboratorio realizado en la clase 3
