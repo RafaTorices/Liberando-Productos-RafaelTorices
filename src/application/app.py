@@ -6,12 +6,21 @@ from fastapi import FastAPI
 from hypercorn.asyncio import serve
 from hypercorn.config import Config as HyperCornConfig
 from prometheus_client import Counter
+# Library used for get the form data from the request
+from fastapi import Form
 
 app = FastAPI()
 
-REQUESTS = Counter('server_requests_total', 'Total number of requests to this webserver')
-HEALTHCHECK_REQUESTS = Counter('healthcheck_requests_total', 'Total number of requests to healthcheck')
-MAIN_ENDPOINT_REQUESTS = Counter('main_requests_total', 'Total number of requests to main endpoint')
+REQUESTS = Counter('server_requests_total',
+                   'Total number of requests to this webserver')
+HEALTHCHECK_REQUESTS = Counter(
+    'healthcheck_requests_total', 'Total number of requests to healthcheck')
+MAIN_ENDPOINT_REQUESTS = Counter(
+    'main_requests_total', 'Total number of requests to main endpoint')
+# Counter for register the total number of calls in the webserver to the post endpoint
+POST_ENDPOINT_REQUESTS = Counter(
+    'post_requests_total', 'Total number of requests to post endpoint')
+
 
 class SimpleServer:
     """
@@ -32,7 +41,7 @@ class SimpleServer:
     @app.get("/health")
     async def health_check():
         """Implement health check endpoint"""
-        # Increment counter used for register the total number of calls in the webserver
+        #  Increment counter used for register the total number of calls in the webserver
         REQUESTS.inc()
         # Increment counter used for register the requests to healtcheck endpoint
         HEALTHCHECK_REQUESTS.inc()
@@ -41,8 +50,21 @@ class SimpleServer:
     @app.get("/")
     async def read_main():
         """Implement main endpoint"""
-        # Increment counter used for register the total number of calls in the webserver
+        #  Increment counter used for register the total number of calls in the webserver
         REQUESTS.inc()
         # Increment counter used for register the total number of calls in the main endpoint
         MAIN_ENDPOINT_REQUESTS.inc()
         return {"msg": "Hello World"}
+
+    # Function for submit endpoint form to return the name passed in the form from app request
+    @app.post("/submit")
+    async def submit(name: str = Form(..., min_length=3)):
+        """Implement submit form endpoint"""
+        # If the name is less than 3 characters, return an error
+        if len(name) < 3:
+            return {"error": "Name should be at least 3 characters"}
+        # Increment counter used for register the total number of calls in the webserver to the post endpoint
+        POST_ENDPOINT_REQUESTS.inc()
+        # Return the name passed in the form formated with capitalize
+        name = name.capitalize()
+        return {"msg": f"Hello, {name}!!"}

@@ -9,6 +9,7 @@ from application.app import app
 
 client = TestClient(app)
 
+
 class TestSimpleServer:
     """
     TestSimpleServer class for testing SimpleServer
@@ -28,3 +29,10 @@ class TestSimpleServer:
 
         assert response.status_code == 200
         assert response.json() == {"msg": "Hello World"}
+
+    @pytest.mark.asyncio
+    async def submit_test(self):
+        """Tests the submit endpoint"""
+        response = client.post("/submit", data={"name": "John Doe"})
+        assert response.status_code == 200
+        assert response.json() == {"your_name": "John Doe"}
