@@ -65,6 +65,5 @@ class SimpleServer:
             return {"error": "Name should be at least 3 characters"}
         # Increment counter used for register the total number of calls in the webserver to the post endpoint
         POST_ENDPOINT_REQUESTS.inc()
-        # Return the name passed in the form formated with capitalize
-        name = name.capitalize()
+        # Return the name passed in the form
         return {"msg": f"Hello, {name}!!"}
