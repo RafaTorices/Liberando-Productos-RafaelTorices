@@ -32,7 +32,7 @@ class TestSimpleServer:
 
     @pytest.mark.asyncio
     async def submit_test(self):
-        """Tests the submit endpoint"""
+        """Tests the submit endpoint form"""
         response = client.post("/submit", data={"name": "John Doe"})
         assert response.status_code == 200
-        assert response.json() == {"your_name": "John Doe"}
+        assert response.json() == {"msg": "Hello, John Doe!!"}
