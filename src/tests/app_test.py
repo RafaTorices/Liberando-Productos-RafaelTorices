@@ -33,7 +33,13 @@ class TestSimpleServer:
     @pytest.mark.asyncio
     async def create_student_test(self):
         """Tests the create_student endpoint function"""
-        name = {"name": "John Doe"}
-        response = client.post("/create_student", name)
+        response = client.post("/create_student?name=John Doe")
         assert response.status_code == 200
         assert response.json() == {"msg": "Hello, John Doe!!"}
+
+    @pytest.mark.asyncio
+    async def get_students_test(self):
+        """Tests the get_students endpoint function"""
+        response = client.get("/get_students")
+        assert response.status_code == 200
+        assert response.json() == {'msg': 'Hello, students!!'}
