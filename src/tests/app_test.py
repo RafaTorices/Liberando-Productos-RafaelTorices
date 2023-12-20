@@ -31,8 +31,9 @@ class TestSimpleServer:
         assert response.json() == {"msg": "Hello World"}
 
     @pytest.mark.asyncio
-    async def submit_test(self):
-        """Tests the submit endpoint form"""
-        response = client.post("/submit", data={"name": "John Doe"})
+    async def create_student_test(self):
+        """Tests the create_student endpoint function"""
+        name = {"name": "John Doe"}
+        response = client.post("/create_student", name)
         assert response.status_code == 200
         assert response.json() == {"msg": "Hello, John Doe!!"}
