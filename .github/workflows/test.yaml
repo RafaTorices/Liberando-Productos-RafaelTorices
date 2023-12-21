@@ -23,7 +23,7 @@ jobs:
       
       - name: Set up MySQL database
         run: |
-          mysql -hlocalhost -uroot -P3306 -ppassword students < students.sql
+          docker exec -i dbmysql mysql -uroot -ppassword students < students.sql
       
       - name: Setup Python
         uses: actions/setup-python@v2
