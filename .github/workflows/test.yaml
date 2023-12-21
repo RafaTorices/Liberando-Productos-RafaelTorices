@@ -13,21 +13,17 @@ name: Test
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:latest
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: students
-        ports:
-          - 3306:3306
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+    
+      - name: Run MySQL container
+        run: |
+          docker run -d -p 3306:3306 --name dbmysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=students mysql:latest
       
       - name: Set up MySQL database
         run: |
-          mysql -h 127.0.0.1 -P 3306 -u root -p password -D students < students.sql
+          docker exec -i dbmysql mysql -uroot -P3306 -ppassword students < students.sql
       
       - name: Setup Python
         uses: actions/setup-python@v2
