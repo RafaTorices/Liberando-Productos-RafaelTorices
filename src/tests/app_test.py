@@ -58,15 +58,9 @@ class TestSimpleServer:
         response = client.post("/create_student", json={"name": "Ana"})
         assert response.status_code == 200
         assert response.json() == {"msg": "OK!!"}
-        # Verifica que los datos se hayan insertado correctamente en la base de datos de prueba
-        # cursor = db_connection.cursor(dictionary=True)
-        # cursor.execute("SELECT * FROM students WHERE name = 'Ana'")
-        # data = cursor.fetchall()
-        # assert len(data) == 1
-        # assert data["name"] == "Ana"
 
-    # @pytest.mark.asyncio
-    # async def get_students_test(self):
-    #     """Tests the get_students endpoint function"""
-    #     response = client.get("/get_students")
-    #     assert response.status_code == 200
+    @pytest.mark.asyncio
+    async def get_students_test(self):
+        """Tests the get_students endpoint function"""
+        response = client.get("/get_students")
+        assert response.status_code == 200
