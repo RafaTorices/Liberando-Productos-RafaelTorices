@@ -30,7 +30,8 @@ jobs:
           echo "CREATE TABLE students (
                   id INT AUTO_INCREMENT PRIMARY KEY,
                   name VARCHAR(255) NOT NULL
-                )" | mysql -h mysql -uroot -ppassword students
+                )" | mysql -h localhost -uroot -ppassword students
+          mysqladmin -h localhost -uroot -ppassword shutdown
 
       - name: Setup Python
         uses: actions/setup-python@v2
