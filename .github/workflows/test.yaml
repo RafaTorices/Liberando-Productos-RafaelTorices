@@ -37,4 +37,6 @@ jobs:
         run: pip3 install -r requirements.txt
 
       - name: Run unit-tests
+        env:
+          DATABASE_URL: mysql+mysqlconnector://root:password@localhost:3306/students
         run: pytest --cov
