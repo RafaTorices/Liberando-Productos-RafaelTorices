@@ -17,7 +17,7 @@ jobs:
       mysql:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: students
         ports:
           - 3306:3306
@@ -37,6 +37,4 @@ jobs:
         run: pip3 install -r requirements.txt
 
       - name: Run unit-tests
-        env:
-          DATABASE_URL: mysql+mysqlconnector://root:password@localhost:3306/students
         run: pytest --cov
