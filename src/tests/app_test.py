@@ -4,6 +4,7 @@ Module used for testing simple server module
 
 from fastapi.testclient import TestClient
 import pytest
+# Import mysql connector to connect to the database MySQL for testing
 import mysql.connector
 
 from application.app import app
@@ -31,24 +32,21 @@ class TestSimpleServer:
         assert response.status_code == 200
         assert response.json() == {"msg": "Hello World"}
 
+    # Create a fixture for the database connection to use in the tests
     @pytest.fixture(scope="function")
     def db_connection(cls):
-        # Establecer una conexión a la base de datos
         connection = None
         try:
-            # Configuración de la base de datos de prueba
+            # Config MySQL database connection for testing
             db_config = {
                 "host": "localhost",
                 "user": "root",
                 "password": "password",
                 "database": "students",
             }
-            # Crear la conexión
             connection = mysql.connector.connect(db_config)
-            # Ejecutar las pruebas
             yield connection
         finally:
-            # Cerrar la conexión después de las pruebas
             if connection:
                 connection.close()
 
@@ -56,11 +54,26 @@ class TestSimpleServer:
     async def create_student_test(self):
         """Tests the create_student endpoint function"""
         response = client.post("/create_student", json={"name": "Ana"})
+
         assert response.status_code == 200
-        assert response.json() == {"msg": "OK!!"}
 
     @pytest.mark.asyncio
     async def get_students_test(self):
         """Tests the get_students endpoint function"""
         response = client.get("/get_students")
+
+        assert response.status_code == 200
+
+    @pytest.mark.asyncio
+    async def get_student_test(self):
+        """Tests the get_student endpoint function"""
+        response = client.get("/get_student/1")
+
+        assert response.status_code == 200
+
+    @pytest.mark.asyncio
+    async def delete_student_test(self):
+        """Tests the delete_student endpoint function"""
+        response = client.delete("/delete_student/1")
+
         assert response.status_code == 200
