@@ -19,11 +19,11 @@ jobs:
     
       - name: Run MySQL container
         run: |
-          docker rm -f docker_mysql
           docker run -d --name docker_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=students mysql:latest
       
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Wait for MySQL to start
+        run: |
+          sleep 30
 
       - name: MySQL create table
         run: |
@@ -42,3 +42,6 @@ jobs:
 
       - name: Run unit-tests
         run: pytest --cov
+      
+      - name: Destroy MySQL container
+        run: docker rm -f docker_mysql
