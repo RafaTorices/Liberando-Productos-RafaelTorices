@@ -22,8 +22,10 @@ jobs:
           docker run -d -p 3306:3306 --name dbmysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=students mysql:latest
       
       - name: Set up MySQL database
+        env:
+          DATABASE_URL: mysql+mysqlconnector://root:password@localhost:3306/students
         run: |
-          docker exec -i dbmysql mysql -uroot -P3306 -ppassword students < students.sql
+          mysql -uroot -P3306 -ppassword students < students.sql
       
       - name: Setup Python
         uses: actions/setup-python@v2
