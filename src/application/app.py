@@ -10,6 +10,7 @@ from prometheus_client import Counter
 from pydantic import BaseModel
 # Import mysql connector to connect to the database MySQL
 import mysql.connector
+from config.config import DB_CONFIG
 
 app = FastAPI()
 
@@ -34,14 +35,11 @@ DELETE_STUDENT_ENDPOINT_REQUESTS = Counter(
     'delete_student_requests_total', 'Total number of requests to delete_student endpoint')
 
 
-# TODO: Change the database connection parameters to use environment variables
-# Config the database MySQL connection
-dbconfig = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="password",
-    database="students"
-)
+try:
+    # Config the database MySQL connection
+    dbconfig = mysql.connector.connect(**DB_CONFIG)
+except Exception as e:
+    print("Error while connecting to MySQL", e)
 
 # Class for define the Item model
 

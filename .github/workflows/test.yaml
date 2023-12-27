@@ -8,6 +8,9 @@ on:
 
 env:
   PYTHON_VERSION: '3.8.12'
+  MYSQL_VERSION: '8.2.0'
+  MYSQL_ROOT_PASSWORD: 'password'
+  MYSQL_DATABASE: 'students'
 
 name: Test
 jobs:
@@ -19,15 +22,15 @@ jobs:
     
       - name: Run MySQL container
         run: |
-          docker run -d --name docker_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=students mysql:latest
+          docker run -d --name docker_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}} -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} mysql:${{env.MYSQL_VERSION}}
       
       - name: Wait for MySQL to start
         run: |
-          sleep 30
+          ./tools/check_mysql_ready.sh
 
       - name: MySQL create table
         run: |
-          docker exec -i docker_mysql mysql -uroot -ppassword students < students.sql
+          docker exec -i docker_mysql mysql -u root -p password students < students.sql
     
       - name: Setup Python
         uses: actions/setup-python@v2

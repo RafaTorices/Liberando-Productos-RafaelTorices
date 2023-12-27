@@ -8,6 +8,7 @@ import pytest
 import mysql.connector
 
 from application.app import app
+from config.config import DB_CONFIG
 
 client = TestClient(app)
 
@@ -37,15 +38,8 @@ class TestSimpleServer:
     def db_connection(cls):
         connection = None
         try:
-            # TODO: Change the database connection parameters to use environment variables
             # Config MySQL database connection for testing
-            db_config = {
-                "host": "localhost",
-                "user": "root",
-                "password": "password",
-                "database": "students",
-            }
-            connection = mysql.connector.connect(db_config)
+            connection = mysql.connector.connect(**DB_CONFIG)
             yield connection
         finally:
             if connection:
