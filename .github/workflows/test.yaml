@@ -26,7 +26,7 @@ jobs:
       
       - name: Wait for MySQL to start
         run: |
-          chmod +x ./tools/check_mysql.sh
+          chmod +x ./tools/check_mysql_ready.sh
           ./tools/check_mysql_ready.sh
         shell: bash
 
