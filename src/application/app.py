@@ -29,10 +29,12 @@ GET_STUDENTS_ENDPOINT_REQUESTS = Counter(
 # Counter for register the number calls in webserver to the get_student endpoint
 GET_STUDENT_ENDPOINT_REQUESTS = Counter(
     'get_student_requests_total', 'Total number of requests to get_student endpoint')
+# Counter for register the number calls in webserver to the delete_student endpoint
 DELETE_STUDENT_ENDPOINT_REQUESTS = Counter(
     'delete_student_requests_total', 'Total number of requests to delete_student endpoint')
 
 
+# TODO: Change the database connection parameters to use environment variables
 # Config the database MySQL connection
 dbconfig = mysql.connector.connect(
     host="localhost",

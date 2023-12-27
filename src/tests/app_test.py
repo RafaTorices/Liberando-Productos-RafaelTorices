@@ -37,6 +37,7 @@ class TestSimpleServer:
     def db_connection(cls):
         connection = None
         try:
+            # TODO: Change the database connection parameters to use environment variables
             # Config MySQL database connection for testing
             db_config = {
                 "host": "localhost",
@@ -67,13 +68,13 @@ class TestSimpleServer:
     @pytest.mark.asyncio
     async def get_student_test(self):
         """Tests the get_student endpoint function"""
-        response = client.get("/get_student/1")
+        response = client.get("/get_student?id=1")
 
         assert response.status_code == 200
 
     @pytest.mark.asyncio
     async def delete_student_test(self):
         """Tests the delete_student endpoint function"""
-        response = client.delete("/delete_student/1")
+        response = client.delete("/delete_student?id=1")
 
         assert response.status_code == 200
