@@ -27,6 +27,7 @@ jobs:
       - name: Wait for MySQL to start
         run: |
           ./tools/check_mysql_ready.sh
+        shell: bash
 
       - name: MySQL create table
         run: |
