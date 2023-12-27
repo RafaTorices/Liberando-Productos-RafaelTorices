@@ -32,7 +32,7 @@ jobs:
 
       - name: MySQL create table
         run: |
-          docker exec -i docker_mysql mysql -u root -p password students < students.sql
+          docker exec -i docker_mysql mysql -uroot -ppassword students < students.sql
     
       - name: Setup Python
         uses: actions/setup-python@v2
