@@ -42,7 +42,7 @@ jobs:
         with:
           images: | 
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+            rafacv99/app
 
       - name: Build and push Docker image to Container registry GitHub Packages
         uses: docker/build-push-action@v2
