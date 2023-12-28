@@ -35,7 +35,7 @@ jobs:
 
       - name: MySQL create table
         run: |
-          docker exec -i $MYSQL_CONTAINER mysql -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < students.sql
+          docker exec -i $MYSQL_CONTAINER mysql -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < ./src/config/students.sql
     
       - name: Setup Python
         uses: actions/setup-python@v2
