@@ -15,9 +15,9 @@ env:
   MYSQL_PASSWORD: 'studentspassword'
   MYSQL_DATABASE: 'students'
 
-name: Test
+name: Test-Python-App
 jobs:
-  unit-tests:
+  Test-Python-App:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,7 +35,7 @@ jobs:
 
       - name: MySQL create table
         run: |
-          docker exec -i docker_mysql mysql -uroot -ppassword students < students.sql
+          docker exec -i $MYSQL_CONTAINERR mysql -u $MYSQL_USER -p $MYSQL_PASSWORD $MYSQL_DATABASE < students.sql
     
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -52,4 +52,4 @@ jobs:
         run: pytest --cov
       
       - name: Destroy MySQL container
-        run: docker rm -f docker_mysql
+        run: docker rm -f $MYSQL_CONTAINER
