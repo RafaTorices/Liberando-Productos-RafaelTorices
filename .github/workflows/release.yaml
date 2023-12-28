@@ -42,7 +42,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: | 
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_DOCKERHUB }}
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME_DOCKERHUB }}
 
       - name: Build and push Docker image to Container registry GitHub Packages
