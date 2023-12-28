@@ -4,7 +4,7 @@ while true; do
         sleep 30
         break
     else
-        echo "MySQL is not running, waiting 10 seconds to retry..."
+        echo "MySQL is not running, waiting 30 seconds to retry..."
         sleep 30
     fi
 done
