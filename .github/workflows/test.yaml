@@ -9,7 +9,7 @@ on:
 env:
   PYTHON_VERSION: '3.8.12'
   MYSQL_VERSION: '8.2.0'
-  MYSQL_HOST: 'docker_mysql'
+  MYSQL_CONTAINER: 'docker_mysql'
   MYSQL_ROOT_PASSWORD: 'password'
   MYSQL_USER: 'studentsuser'
   MYSQL_PASSWORD: 'studentspassword'
@@ -25,7 +25,7 @@ jobs:
     
       - name: Run MySQL container
         run: |
-          docker run -d --name ${{env.MySQL_HOST}} -p 3306:3306 -e MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}} -e MYSQL_USER=${{env.MYSQL_USER}} -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}} -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} mysql:${{env.MYSQL_VERSION}}
+          docker run -d --name $MYSQL_CONTAINER -p 3306:3306 -e MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}} -e MYSQL_USER=${{env.MYSQL_USER}} -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}} -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} mysql:${{env.MYSQL_VERSION}}
       
       - name: Wait for MySQL to start
         run: |
