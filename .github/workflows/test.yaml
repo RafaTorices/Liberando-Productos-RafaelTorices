@@ -10,6 +10,8 @@ env:
   PYTHON_VERSION: '3.8.12'
   MYSQL_VERSION: '8.2.0'
   MYSQL_ROOT_PASSWORD: 'password'
+  MYSQL_USER: 'studentsuser'
+  MYSQL_PASSWORD: 'studentspassword'
   MYSQL_DATABASE: 'students'
 
 name: Test
