@@ -1,4 +1,4 @@
-name: release-build
+name: Release-Python-App-Image
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'v*'
     
 jobs:
-  release:
+  Release-Python-App-Image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
