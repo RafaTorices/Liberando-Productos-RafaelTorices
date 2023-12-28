@@ -1,4 +1,4 @@
-name: Build-Push-Docker-Image
+name: Build-Publish-Docker-Image
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
   IMAGE_NAME: my-image
 
 jobs:
-  Build-Push-Docker-Image:
+  Build-Publish-Docker-Image:
     runs-on: ubuntu-latest
 
     permissions:
