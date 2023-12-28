@@ -1,6 +1,6 @@
-name: Create and publish a Docker image to GitHub Packages
+name: Create/publish Docker image to GitHub Packages
 
-# Configures this workflow to run every time a change is pushed to the branch called `release`.
+# Configures this workflow to run every time a change is pushed to the branch called `release` or a new tag is created that starts with `v`.
 on:
   push:
     branches: ['release']
@@ -20,7 +20,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      # 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
