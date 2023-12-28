@@ -5,8 +5,8 @@ PIP		= $(VENV)/bin/pip
 # Variables used to configure docker images
 IMAGE_REGISTRY_DOCKERHUB 	?= RafaTorices
 IMAGE_REGISTRY_GHCR			?= ghcr.io
-IMAGE_REPO					= keep-RafaTorices-liberando-productos-practica-final
-IMAGE_NAME					?= keep-RafaTorices-liberando-productos-practica-final
+IMAGE_REPO					= keep-rafatorices-liberando-productos-practica-final
+IMAGE_NAME					?= keep-rafatorices-liberando-productos-practica-final
 VERSION						?= develop
 
 # Variables used to configure docker images registries to build and push
