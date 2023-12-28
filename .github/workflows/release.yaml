@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: 'python-fastapi-app'
 
 jobs:
   Build-Publish-Docker-Image:
@@ -42,7 +42,7 @@ jobs:
         with:
           images: | 
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            rafacv99/app
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image to Container registry GitHub Packages
         uses: docker/build-push-action@v2
