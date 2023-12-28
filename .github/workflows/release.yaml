@@ -1,4 +1,4 @@
-name: Release Docker image
+name: Build-Push-Docker-Image
 
 # Configures this workflow to run every time a change is pushed to the branch called `release` or a new tag is created that starts with `v`.
 on:
