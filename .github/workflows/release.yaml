@@ -1,9 +1,8 @@
-name: Docker image to Registries
+name: Release Docker image
 
 # Configures this workflow to run every time a change is pushed to the branch called `release` or a new tag is created that starts with `v`.
 on:
   push:
-    branches: ['release']
     tags:
       - 'v*'
 
