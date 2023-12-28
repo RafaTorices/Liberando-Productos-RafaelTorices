@@ -5,6 +5,6 @@ while true; do
         break
     else
         echo "MySQL is not running, waiting 10 seconds to retry..."
-        sleep 10
+        sleep 30
     fi
 done
