@@ -38,6 +38,11 @@ DELETE_STUDENT_ENDPOINT_REQUESTS = Counter(
 try:
     # Config the database MySQL connection
     dbconfig = mysql.connector.connect(**DB_CONFIG)
+    mycursor = dbconfig.cursor()
+    sql = "CREATE TABLE IF NOT EXISTS students (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))"
+    mycursor.execute(sql)
+    dbconfig.commit()
+
 except Exception as e:
     print("Error while connecting to MySQL", e)
 
