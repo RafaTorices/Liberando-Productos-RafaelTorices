@@ -11,3 +11,10 @@ DB_CONFIG = {
     'password': os.environ["MYSQL_PASSWORD"],
     'database': os.environ["MYSQL_DATABASE"]
 }
+
+DB_CONFIG_TEST = {
+    'host': 'localhost',
+    'user': 'studentsuser',
+    'password': 'studentspassword',
+    'database': 'students'
+}
