@@ -26,6 +26,7 @@ jobs:
       - name: Run MySQL container
         run: |
           docker run -d --name $MYSQL_HOST -p 3306:3306 -e MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}} -e MYSQL_USER=${{env.MYSQL_USER}} -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}} -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} mysql:${{env.MYSQL_VERSION}}
+          docker ps
       
       - name: Wait for MySQL to start
         run: |

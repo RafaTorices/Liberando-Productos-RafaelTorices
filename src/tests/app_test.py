@@ -8,7 +8,7 @@ import pytest
 import mysql.connector
 
 from application.app import app
-from config.config import DB_CONFIG_TEST
+from config.config import DB_CONFIG
 
 client = TestClient(app)
 
@@ -39,7 +39,7 @@ class TestSimpleServer:
         connection = None
         try:
             # Config MySQL database connection for testing
-            connection = mysql.connector.connect(**DB_CONFIG_TEST)
+            connection = mysql.connector.connect(**DB_CONFIG)
             yield connection
         finally:
             if connection:
