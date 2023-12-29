@@ -5,9 +5,16 @@ import os
 # export MYSQL_PASSWORD="studentspassword"
 # export MYSQL_DATABASE="students"
 
+DB_DEFAULT_CONFIG = {
+    "host": "localhost",
+    "user": "studentsuser",
+    "password": "studentspassword",
+    "database": "students"
+}
+
 DB_CONFIG = {
-    'host': os.environ["MYSQL_HOST"],
-    'user': os.environ["MYSQL_USER"],
-    'password': os.environ["MYSQL_PASSWORD"],
-    'database': os.environ["MYSQL_DATABASE"]
+    'host': os.getenv("MYSQL_HOST", DB_DEFAULT_CONFIG["host"]),
+    'user': os.getenv("MYSQL_USER", DB_DEFAULT_CONFIG["user"]),
+    'password': os.getenv("MYSQL_PASSWORD", DB_DEFAULT_CONFIG["password"]),
+    'database': os.getenv("MYSQL_DATABASE", DB_DEFAULT_CONFIG["database"])
 }
