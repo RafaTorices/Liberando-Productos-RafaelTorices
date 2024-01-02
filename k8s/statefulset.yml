@@ -14,34 +14,34 @@ spec:
         app: python-app-fastapi-mysql
     spec:
       containers:
-      - name: python-app-fastapi-mysql
-        image: mysql
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: python-app-fastapi-secret
-              key: MYSQL_ROOT_PASSWORD
-        - name: MYSQL_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: python-app-fastapi-configmap
-              key: MYSQL_DATABASE
-        - name: MYSQL_USER
-          valueFrom:
-            configMapKeyRef:
-              name: python-app-fastapi-configmap
-              key: MYSQL_USER
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: python-app-fastapi-configmap
-              key: MYSQL_PASSWORD
-        - name: MYSQL_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: python-app-fastapi-configmap
-              key: MYSQL_HOST
-        ports:
-        - name: mysql-port
-          containerPort: 3306
+        - name: python-app-fastapi-mysql
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: python-app-fastapi-configmap
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: python-app-fastapi-configmap
+                  key: MYSQL_DATABASE
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: python-app-fastapi-configmap
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: python-app-fastapi-configmap
+                  key: MYSQL_PASSWORD
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: python-app-fastapi-configmap
+                  key: MYSQL_HOST
+          ports:
+            - name: mysql-port
+              containerPort: 3306

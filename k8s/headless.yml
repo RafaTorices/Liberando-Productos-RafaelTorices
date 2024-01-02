@@ -7,9 +7,9 @@ spec:
   selector:
     app: python-app-fastapi-mysql
   ports:
-  - name: mysql-port
-    protocol: TCP
-    port: 3306
-    targetPort: mysql-port
+    - name: mysql-port-service-headless
+      protocol: TCP
+      port: 3306
+      targetPort: mysql-port
   type: ClusterIP
   clusterIP: None

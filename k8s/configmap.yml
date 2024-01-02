@@ -7,3 +7,4 @@ data:
   MYSQL_PORT: "3306"
   MYSQL_DATABASE: "students"
   MYSQL_USER: "studentsuser"
+  MYSQL_PASSWORD: "studentspassword"

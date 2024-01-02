@@ -6,14 +6,13 @@ spec:
   selector:
     app: python-app-fastapi
   ports:
-  - name: app-port
-    protocol: TCP
-    port: 8082
-    targetPort: app-port
+    - name: app-port
+      protocol: TCP
+      port: 8082
+      targetPort: app-port
   type: ClusterIP
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -22,8 +21,8 @@ spec:
   selector:
     app: python-app-fastapi-mysql
   ports:
-  - name: mysql-port
-    protocol: TCP
-    port: 3306
-    targetPort: mysql-port
+    - name: mysql-port-service
+      protocol: TCP
+      port: 3306
+      targetPort: mysql-port
   type: ClusterIP
