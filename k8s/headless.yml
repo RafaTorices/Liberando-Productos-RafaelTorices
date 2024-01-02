@@ -1,0 +1,15 @@
+# Service headless para MySQL
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-app-fastapi-mysql-headless
+spec:
+  selector:
+    app: python-app-fastapi-mysql
+  ports:
+  - name: mysql-port
+    protocol: TCP
+    port: 3306
+    targetPort: mysql-port
+  type: ClusterIP
+  clusterIP: None

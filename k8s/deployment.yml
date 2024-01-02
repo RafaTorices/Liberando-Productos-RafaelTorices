@@ -1,0 +1,51 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app-fastapi-deployment
+  labels:
+    app: python-app-fastapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: python-app-fastapi
+  template:
+    metadata:
+      labels:
+        app: python-app-fastapi
+    spec:
+      containers:
+      - name: python-app-fastapi-container
+        image: rafacv99/python-app-fastapi:latest
+        ports:
+        - name: app-port
+          containerPort: 8082
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "300m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: python-app-fastapi-secret
+              key: MYSQL_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: python-app-fastapi-configmap
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: python-app-fastapi-configmap
+              key: MYSQL_USER
+        - name: MYSQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: python-app-fastapi-configmap
+              key: MYSQL_HOST
