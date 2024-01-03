@@ -3,8 +3,6 @@ kind: ConfigMap
 metadata:
   name: python-app-fastapi-configmap
 data:
-  MYSQL_HOST: "python-app-fastapi-mysql"
-  MYSQL_PORT: "3306"
+  MYSQL_HOST: "python-app-fastapi-mysql-service"
   MYSQL_DATABASE: "students"
   MYSQL_USER: "studentsuser"
-  MYSQL_PASSWORD: "studentspassword"

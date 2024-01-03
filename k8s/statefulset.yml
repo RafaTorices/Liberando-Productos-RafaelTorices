@@ -19,8 +19,8 @@ spec:
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
-                configMapKeyRef:
-                  name: python-app-fastapi-configmap
+                secretKeyRef:
+                  name: python-app-fastapi-secret
                   key: MYSQL_ROOT_PASSWORD
             - name: MYSQL_DATABASE
               valueFrom:
@@ -34,14 +34,9 @@ spec:
                   key: MYSQL_USER
             - name: MYSQL_PASSWORD
               valueFrom:
-                configMapKeyRef:
-                  name: python-app-fastapi-configmap
+                secretKeyRef:
+                  name: python-app-fastapi-secret
                   key: MYSQL_PASSWORD
-            - name: MYSQL_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: python-app-fastapi-configmap
-                  key: MYSQL_HOST
           ports:
             - name: mysql-port
               containerPort: 3306

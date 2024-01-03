@@ -29,6 +29,11 @@ spec:
               memory: "512Mi"
               cpu: "1"
           env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: python-app-fastapi-configmap
+                  key: MYSQL_HOST
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -44,8 +49,3 @@ spec:
                 configMapKeyRef:
                   name: python-app-fastapi-configmap
                   key: MYSQL_USER
-            - name: MYSQL_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: python-app-fastapi-configmap
-                  key: MYSQL_HOST
