@@ -1,0 +1,21 @@
+# docker-compose.yml
+# Run app python fastapi with mysql
+version: "3"
+services:
+  python-app-fastapi-mysql:
+    image: mysql:latest
+    container_name: python-app-fastapi-mysql
+    env_file:
+      - ./docker-compose.env
+  python-app-fastapi:
+    depends_on:
+      - python-app-fastapi-mysql
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python-app-fastapi
+    env_file:
+      - ./docker-compose.env
+    ports:
+      - "8000:8000"
+      - "8082:8082"

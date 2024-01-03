@@ -1,3 +1,4 @@
+# Dockerfile for the Python FastAPI
 FROM python:3.8.11-alpine3.14
 
 WORKDIR /service/app
