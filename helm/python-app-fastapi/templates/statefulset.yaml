@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "python-app-fastapi.fullname" . }}-mysql-statefulset
+spec:
+  serviceName: {{ include "python-app-fastapi.fullname" . }}-mysql-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "python-app-fastapi.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.labels.mysql.app }}
+  template:
+    metadata:
+      labels:
+        {{- include "python-app-fastapi.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.labels.mysql.app }}
+    spec:
+      containers:
+        - name: python-app-fastapi-mysql
+          image: {{ .Values.image.repository.mysql }}:{{ .Values.image.tag.mysql }}
+          ports:
+            - name: {{ .Values.deployment.mysql.ports.name }}
+              containerPort: {{ .Values.deployment.mysql.ports.containerPort }}
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "python-app-fastapi.fullname" . }}-configmap
+                  key: MYSQL_HOST
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "python-app-fastapi.fullname" . }}-secret
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                    name: {{ include "python-app-fastapi.fullname" . }}-configmap
+                    key: MYSQL_DATABASE
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                    name: {{ include "python-app-fastapi.fullname" . }}-configmap
+                    key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                    name: {{ include "python-app-fastapi.fullname" . }}-secret
+                    key: MYSQL_PASSWORD
+            - name: MYSQL_PORT
+              valueFrom:
+                configMapKeyRef:
+                    name: {{ include "python-app-fastapi.fullname" . }}-configmap
+                    key: MYSQL_PORT

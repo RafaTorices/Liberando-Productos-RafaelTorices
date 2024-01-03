@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "python-app-fastapi.fullname" . }}-deployment
+spec:
+  selector:
+    matchLabels:
+      {{- include "python-app-fastapi.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.labels.app.app }}
+  replicas: {{ .Values.deployment.replicaCount }}
+  template:
+    metadata:
+      labels:
+        {{- include "python-app-fastapi.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.labels.app.app }}
+    spec:
+      containers:
+      - name: python-app-fastapi-container
+        image: {{ .Values.image.repository.app }}:{{ .Values.image.tag.app }}
+        ports:
+        - name: {{ .Values.deployment.app.ports.name }}
+          containerPort: {{ .Values.deployment.app.ports.containerPort }}
+        resources:
+          requests:
+            memory: {{ .Values.deployment.resources.requests.memoryRequest }}
+            cpu: {{ .Values.deployment.resources.requests.cpuRequest }}
+          limits:
+            memory: {{ .Values.deployment.resources.limits.memoryLimit }}
+            cpu: {{ .Values.deployment.resources.limits.cpuLimit }}
+        env:
+          - name: MYSQL_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "python-app-fastapi.fullname" . }}-configmap
+                key: MYSQL_HOST
+          - name: MYSQL_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "python-app-fastapi.fullname" . }}-configmap
+                key: MYSQL_PORT
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "python-app-fastapi.fullname" . }}-configmap
+                key: MYSQL_DATABASE
+          - name: MYSQL_USER
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "python-app-fastapi.fullname" . }}-configmap
+                key: MYSQL_USER
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "python-app-fastapi.fullname" . }}-secret
+                key: MYSQL_PASSWORD
+            

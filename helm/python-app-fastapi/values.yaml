@@ -1,0 +1,63 @@
+# Default values for python-app-fastapi.
+labels:
+  app:
+    app: python-app-fastapi
+  mysql:
+    app: python-app-fastapi-mysql
+
+secret:
+  type: Opaque
+  MYSQL_ROOT_PASSWORD: c3R1ZGVudHNwYXNzd29yZA==
+  MYSQL_PASSWORD: c3R1ZGVudHNwYXNzd29yZA==
+
+configmap:
+  MYSQL_PORT: 3306
+  MYSQL_DATABASE: students
+  MYSQL_USER: studentsuser
+
+deployment:
+  replicaCount: 2
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 50
+  resources:
+    requests:
+      memoryRequest: "256Mi"
+      cpuRequest: "300m"
+    limits:
+      memoryLimit: "1024Mi"
+      cpuLimit: "2"
+  app:
+    ports:
+      name: app-port
+      containerPort: 8082
+  mysql:
+    ports:
+      name: mysql-port
+      containerPort: 3306
+
+image:
+  repository:
+    app: rafacv99/python-app-fastapi
+    mysql: mysql
+  tag:
+    app: latest
+    mysql: latest
+
+service:
+  app:
+    type: ClusterIP
+    ports:
+      name: app-port
+      port: 8082
+      targetPort: app-port
+      protocol: TCP
+  mysql:
+    type: ClusterIP
+    ports:
+      name: mysql-port
+      port: 3306
+      targetPort: mysql-port
+      protocol: TCP
