@@ -3,13 +3,13 @@ kind: Deployment
 metadata:
   name: {{ include "python-app-fastapi.fullname" . }}-deployment
 spec:
+  {{- if not .Values.deployment.autoscaling.enabled }}
+  replicas: {{ .Values.deployment.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "python-app-fastapi.selectorLabels" . | nindent 6 }}
       app: {{ .Values.labels.app.app }}
-  {{- if not .Values.deployment.autoscaling.enabled }}
-  replicas: {{ .Values.deployment.replicaCount }}
-  {{- end }}
   template:
     metadata:
       labels:
@@ -24,13 +24,13 @@ spec:
       - name: python-app-fastapi-container
         image: {{ .Values.image.repository.app }}:{{ .Values.image.tag.app }}
         ports:
-        - name: {{ .Values.deployment.app.ports.name }}
-          containerPort: {{ .Values.deployment.app.ports.containerPort }}
-        {{- if .Values.metrics.enabled }}
-        - name: {{ .Values.metrics.svc.name }}
-          containerPort: {{ .Values.metrics.svc.port }}
-          protocol: TCP
-        {{- end }}
+          - name: {{ .Values.deployment.app.ports.name }}
+            containerPort: {{ .Values.deployment.app.ports.containerPort }}
+          {{- if .Values.metrics.enabled }}
+          - name: {{ .Values.metrics.svc.name }}
+            containerPort: {{ .Values.metrics.svc.port }}
+            protocol: TCP
+          {{- end }}
         livenessProbe:
           httpGet:
             path: /health
@@ -40,12 +40,7 @@ spec:
             path: /health
             port: app-port
         resources:
-          requests:
-            memory: {{ .Values.deployment.resources.requests.memoryRequest }}
-            cpu: {{ .Values.deployment.resources.requests.cpuRequest }}
-          limits:
-            memory: {{ .Values.deployment.resources.limits.memoryLimit }}
-            cpu: {{ .Values.deployment.resources.limits.cpuLimit }}
+          {{- toYaml .Values.deployment.resources | nindent 12 }}
         env:
           - name: MYSQL_HOST
             valueFrom:

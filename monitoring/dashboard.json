@@ -545,8 +545,8 @@
       {
         "current": {
           "selected": true,
-          "text": ["fast-api"],
-          "value": ["fast-api"]
+          "text": ["python-app-fastapi"],
+          "value": ["python-app-fastapi"]
         },
         "datasource": {
           "type": "prometheus",
