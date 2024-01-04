@@ -14,6 +14,10 @@ spec:
         {{- include "python-app-fastapi.selectorLabels" . | nindent 8 }}
         app: {{ .Values.labels.app.app }}
     spec:
+      initContainers:
+      - name: delay-init-container
+        image: alpine:latest
+        command: ["sleep", "60"]
       containers:
       - name: python-app-fastapi-container
         image: {{ .Values.image.repository.app }}:{{ .Values.image.tag.app }}
