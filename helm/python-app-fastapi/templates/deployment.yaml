@@ -7,7 +7,9 @@ spec:
     matchLabels:
       {{- include "python-app-fastapi.selectorLabels" . | nindent 6 }}
       app: {{ .Values.labels.app.app }}
+  {{- if not .Values.deployment.autoscaling.enabled }}
   replicas: {{ .Values.deployment.replicaCount }}
+  {{- end }}
   template:
     metadata:
       labels:
@@ -24,6 +26,19 @@ spec:
         ports:
         - name: {{ .Values.deployment.app.ports.name }}
           containerPort: {{ .Values.deployment.app.ports.containerPort }}
+        {{- if .Values.metrics.enabled }}
+        - name: {{ .Values.metrics.svc.name }}
+          containerPort: {{ .Values.metrics.svc.port }}
+          protocol: TCP
+        {{- end }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: app-port
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: app-port
         resources:
           requests:
             memory: {{ .Values.deployment.resources.requests.memoryRequest }}

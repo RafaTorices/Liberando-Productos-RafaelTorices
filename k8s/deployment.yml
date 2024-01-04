@@ -21,6 +21,16 @@ spec:
           ports:
             - name: app-port
               containerPort: 8082
+            - name: metrics
+              containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: app-port
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: app-port
           resources:
             requests:
               memory: "256Mi"

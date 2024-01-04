@@ -20,8 +20,9 @@ deployment:
   autoscaling:
     enabled: true
     minReplicas: 2
-    maxReplicas: 4
-    targetCPUUtilizationPercentage: 50
+    maxReplicas: 8
+    targetCPUUtilizationPercentage: 5
+    targetMemoryUtilizationPercentage: 5
   resources:
     requests:
       memoryRequest: "256Mi"
@@ -61,3 +62,9 @@ service:
       port: 3306
       targetPort: mysql-port
       protocol: TCP
+
+metrics:
+  enabled: true
+  svc:
+    port: 8000
+    name: metrics
