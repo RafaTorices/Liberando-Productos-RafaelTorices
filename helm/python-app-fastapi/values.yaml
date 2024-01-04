@@ -21,8 +21,8 @@ deployment:
     enabled: true
     minReplicas: 2
     maxReplicas: 8
-    targetCPUUtilizationPercentage: 50
-    targetMemoryUtilizationPercentage: 50
+    targetCPUUtilizationPercentage: 1
+    targetMemoryUtilizationPercentage: 1
   resources:
     requests:
       memoryRequest: "256Mi"

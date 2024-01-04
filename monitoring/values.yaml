@@ -1,3 +1,4 @@
+# Default values for monitoring with slack alerting for prometheus.
 coreDns:
   enabled: true
   service:
