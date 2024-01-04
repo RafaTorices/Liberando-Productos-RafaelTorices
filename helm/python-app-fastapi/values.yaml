@@ -20,16 +20,16 @@ deployment:
   autoscaling:
     enabled: true
     minReplicas: 2
-    maxReplicas: 20
-    targetCPUUtilizationPercentage: 20
-    targetMemoryUtilizationPercentage: 20
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
   resources:
     requests:
-      memory: 64Mi
-      cpu: 50m
-    limits:
       memory: 128Mi
       cpu: 100m
+    limits:
+      memory: 256Mi
+      cpu: 200m
   app:
     ports:
       name: app-port
