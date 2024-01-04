@@ -106,9 +106,9 @@ alertmanager:
       - name: "null"
       - name: "slack"
         slack_configs:
-          - api_url: "https://hooks.slack.com/services/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"
+          - api_url: "https://hooks.slack.com/services/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"
             send_resolved: true
-            channel: "#alarms_devops_test_prometheus"
+            channel: "#rafaeltorices-prometheus-alarms"
             title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Monitoring Event Notification'
             text: |-
               {{ range .Alerts }}
@@ -129,21 +129,12 @@ additionalPrometheusRulesMap:
     groups:
       - name: ruleset_1
         rules:
-          - alert: MongoDBDown
-            expr: mongodb_up == 0
-            for: 0m
-            labels:
-              severity: critical
-            annotations:
-              summary: MongoDB Down (instance {{ $labels.instance }})
-              description: "MongoDB instance is down"
-
           - alert: fastApiConsumingMoreThanRequest
-            expr: avg(container_memory_usage_bytes{pod=~"my-app-fast-api-webapp-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="memory",container="fast-api-webapp"}) by (pod)
+            expr: avg(container_memory_usage_bytes{pod=~"python-app-fastapi-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="memory",container="python-app-fastapi"}) by (pod)
             for: 0m
             labels:
               severity: critical
-              alertname: "fast-api-webapp container is consuming more than requested"
+              alertname: "python-app-fastapi container is consuming more than requested"
             annotations:
               summary: Pod {{ $labels.pod }} consuming more than requested
               description: "Pod more less than request"
@@ -173,8 +164,4 @@ grafana:
       node-exporter-full:
         gnetId: 1860
         revision: 29
-        datasource: Prometheus
-      mongodb:
-        gnetId: 16490
-        revision: 1
         datasource: Prometheus

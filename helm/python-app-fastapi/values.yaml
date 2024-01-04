@@ -25,11 +25,11 @@ deployment:
     targetMemoryUtilizationPercentage: 1
   resources:
     requests:
-      memoryRequest: "256Mi"
-      cpuRequest: "300m"
+      memoryRequest: "64Mi"
+      cpuRequest: "50m"
     limits:
-      memoryLimit: "1024Mi"
-      cpuLimit: "2"
+      memoryLimit: "128Mi"
+      cpuLimit: "0.2"
   app:
     ports:
       name: app-port
