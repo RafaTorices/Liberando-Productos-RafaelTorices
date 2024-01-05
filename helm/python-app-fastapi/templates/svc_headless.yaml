@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "python-app-fastapi.fullname" . }}-mysql-headless
+  labels:
+    {{- include "python-app-fastapi.labels" . | nindent 4 }}
+    app: {{ .Values.labels.mysql.app }}
+spec:
+  ports:
+    - port: {{ .Values.service.mysql.ports.port }}
+      targetPort: {{ .Values.service.mysql.ports.targetPort }}
+      protocol: {{ .Values.service.mysql.ports.protocol }}
+      name: {{ .Values.service.mysql.ports.name }}
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    {{- include "python-app-fastapi.selectorLabels" . | nindent 4 }}
+    app: {{ .Values.labels.mysql.app }}
