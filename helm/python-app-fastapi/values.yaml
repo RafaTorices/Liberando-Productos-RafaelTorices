@@ -21,14 +21,14 @@ deployment:
     enabled: true
     minReplicas: 2
     maxReplicas: 10
-    targetCPUUtilizationPercentage: 20
-    targetMemoryUtilizationPercentage: 20
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 70
   resources:
     requests:
-      memory: 128Mi
+      memory: 64Mi
       cpu: 100m
     limits:
-      memory: 256Mi
+      memory: 128Mi
       cpu: 200m
   app:
     ports:

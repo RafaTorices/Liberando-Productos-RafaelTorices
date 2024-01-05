@@ -129,16 +129,27 @@ additionalPrometheusRulesMap:
     groups:
       - name: ruleset_1
         rules:
-          - alert: fastApiConsumingMoreThanRequest
-            expr: avg(container_memory_usage_bytes{pod=~"demo-python-app-fastapi-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="memory",container="python-app-fastapi"}) by (pod)
+          - alert: PythonAppFastApiConsumingMemoryMoreThanRequest
+            expr: avg(container_memory_usage_bytes{pod=~"demo-python-app-fastapi-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="memory",container="demo-python-app-fastapi"}) by (pod)
             for: 0m
             labels:
               severity: critical
-              alertname: "python-app-fastapi container is consuming more than requested"
+              alertname: "Python-App-Fastapi container is consuming more memory than requested"
             annotations:
-              summary: Pod {{ $labels.pod }} consuming more than requested
-              description: "Pod more less than request"
-              message: Pod {{ $labels.pod }} is consuming more than requested
+              summary: Pod {{ $labels.pod }} consuming more memory than requested
+              description: "Pod more memory less than request"
+              message: Pod {{ $labels.pod }} is consuming more memory than requested
+
+          - alert: PythonAppFastApiConsumingCPUMoreThanRequest
+            expr: avg(container_cpu_usage_bytes{pod=~"demo-python-app-fastapi-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="cpu",container="demo-python-app-fastapi"}) by (pod)
+            for: 0m
+            labels:
+              severity: critical
+              alertname: "Python-App-Fastapi container is consuming more cpu than requested"
+            annotations:
+              summary: Pod {{ $labels.pod }} consuming more cpu than requested
+              description: "Pod more memory less than request"
+              message: Pod {{ $labels.pod }} is consuming more cpu than requested
 
 grafana:
   plugins:
