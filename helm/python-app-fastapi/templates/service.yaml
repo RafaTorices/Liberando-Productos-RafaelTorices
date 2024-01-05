@@ -14,6 +14,8 @@ spec:
       name: {{ .Values.service.app.ports.name }}
     {{- if .Values.metrics.enabled }}
     - port: {{ .Values.metrics.svc.port }}
+      targetPort: {{ .Values.metrics.svc.port }}
+      protocol: {{ .Values.metrics.svc.protocol }}
       name: {{ .Values.metrics.svc.name }}
     {{- end }}
   selector:

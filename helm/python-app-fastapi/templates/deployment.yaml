@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "python-app-fastapi.fullname" . }}-deployment
+  labels:
+    {{- include "python-app-fastapi.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.deployment.autoscaling.enabled }}
   replicas: {{ .Values.deployment.replicaCount }}
@@ -29,7 +31,7 @@ spec:
           {{- if .Values.metrics.enabled }}
           - name: {{ .Values.metrics.svc.name }}
             containerPort: {{ .Values.metrics.svc.port }}
-            protocol: TCP
+            protocol: {{ .Values.metrics.svc.protocol }}
           {{- end }}
         livenessProbe:
           httpGet:

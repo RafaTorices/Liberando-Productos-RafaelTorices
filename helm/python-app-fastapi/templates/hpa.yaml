@@ -2,7 +2,7 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "python-app-fastapi.fullname" . }}
+  name: {{ include "python-app-fastapi.fullname" . }}-hpa
   labels:
     {{- include "python-app-fastapi.labels" . | nindent 4 }}
 spec:

@@ -43,7 +43,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "pink",
+                "color": "green",
                 "value": null
               }
             ]
@@ -64,7 +64,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["last"],
+          "calcs": [
+            "last"
+          ],
           "fields": "",
           "values": false
         },
@@ -88,7 +90,211 @@
           "refId": "A"
         }
       ],
-      "title": "main_requests_total",
+      "title": "Number of calls to server",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 7,
+        "x": 8,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(last_over_time(students_create_total[$__rate_interval])) by (pod)",
+          "format": "time_series",
+          "interval": "",
+          "legendFormat": "{{pod}} calls create students",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Number of calls to create student",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 15,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(last_over_time(main_requests_total[$__rate_interval])) by (pod)",
+          "format": "time_series",
+          "interval": "",
+          "legendFormat": "{{pod}} calls main endpoint",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Number of calls to main endpoint",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(last_over_time(healthcheck_requests_total[$__rate_interval])) by (pod)",
+          "interval": "",
+          "legendFormat": "{{pod}} calls healthcheck",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Number of calls to healthcheck endpoint in the last hour",
       "type": "stat"
     },
     {
@@ -161,7 +367,9 @@
       "id": 7,
       "options": {
         "legend": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "displayMode": "list",
           "placement": "right",
           "showLegend": true
@@ -285,7 +493,9 @@
       "id": 8,
       "options": {
         "legend": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "displayMode": "list",
           "placement": "right",
           "showLegend": true
@@ -347,8 +557,12 @@
       {
         "current": {
           "selected": true,
-          "text": ["python-app-fastapi"],
-          "value": ["python-app-fastapi"]
+          "text": [
+            "fast-api"
+          ],
+          "value": [
+            "fast-api"
+          ]
         },
         "datasource": {
           "type": "prometheus",
@@ -373,8 +587,12 @@
       {
         "current": {
           "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "prometheus",
@@ -404,7 +622,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "PYTHON-APP-FASTAPI- CALLS ENDPOINTS APP",
+  "title": "Number of calls to endpoints",
   "uid": "EEkZgIUGz",
   "version": 3,
   "weekStart": ""

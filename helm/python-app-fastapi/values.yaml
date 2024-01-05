@@ -21,8 +21,8 @@ deployment:
     enabled: true
     minReplicas: 2
     maxReplicas: 10
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
+    targetCPUUtilizationPercentage: 20
+    targetMemoryUtilizationPercentage: 20
   resources:
     requests:
       memory: 128Mi
@@ -68,3 +68,9 @@ metrics:
   svc:
     port: 8000
     name: metrics
+    protocol: TCP
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
