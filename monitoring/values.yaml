@@ -106,7 +106,7 @@ alertmanager:
       - name: "null"
       - name: "slack"
         slack_configs:
-          - api_url: "https://hooks.slack.com/services/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"
+          - api_url: "https://hooks.slack.com/services/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"
             send_resolved: true
             channel: "#rafaeltorices-prometheus-alarms"
             title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Monitoring Event Notification'
