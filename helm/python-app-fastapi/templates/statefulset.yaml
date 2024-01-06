@@ -21,6 +21,8 @@ spec:
           ports:
             - name: {{ .Values.deployment.mysql.ports.name }}
               containerPort: {{ .Values.deployment.mysql.ports.containerPort }}
+          resources:
+            {{- toYaml .Values.statefulset.resources | nindent 12 }}
           env:
             - name: MYSQL_HOST
               valueFrom:

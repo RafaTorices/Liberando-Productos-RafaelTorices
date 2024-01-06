@@ -29,14 +29,14 @@ nodeExporter:
   jobLabel: node-exporter
   serviceMonitor:
     relabelings:
-      - targetLabel: job
-        replacement: node-exporter
+    - targetLabel: job
+      replacement: node-exporter
 prometheus-node-exporter:
   podLabels:
     jobLabel: node-exporter
   extraArgs:
-    - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
-    - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+  - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+  - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
 
 prometheus:
   enabled: true
@@ -92,33 +92,33 @@ alertmanager:
       repeat_interval: 12h
       receiver: "slack"
       routes:
-        - match:
-            alertname: Watchdog
-          receiver: "null"
+      - match:
+          alertname: Watchdog
+        receiver: "null"
     # This inhibt rule is a hack from: https://stackoverflow.com/questions/54806336/how-to-silence-prometheus-alertmanager-using-config-files/54814033#54814033
     inhibit_rules:
-      - target_match_re:
-          alertname: ".+Overcommit"
-        source_match:
-          alertname: "Watchdog"
-        equal: ["prometheus"]
+    - target_match_re:
+        alertname: ".+Overcommit"
+      source_match:
+        alertname: "Watchdog"
+      equal: ["prometheus"]
     receivers:
-      - name: "null"
-      - name: "slack"
-        slack_configs:
-          - api_url: "https://hooks.slack.com/services/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"
-            send_resolved: true
-            channel: "#rafaeltorices-prometheus-alarms"
-            title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Monitoring Event Notification'
-            text: |-
-              {{ range .Alerts }}
-                *Alert:* {{ .Labels.alertname }} - `{{ .Labels.severity }}`
-                *Description:* {{ .Annotations.message }}
-                *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:> *Runbook:* <{{ .Annotations.runbook_url }}|:spiral_note_pad:>
-                *Details:*
-                {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
-                {{ end }}
-              {{ end }}
+    - name: "null"
+    - name: "slack"
+      slack_configs:
+      - api_url: "https://hooks.slack.com/services/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"
+        send_resolved: true
+        channel: "#rafaeltorices-prometheus-alarms"
+        title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Monitoring Event Notification'
+        text: |-
+          {{ range .Alerts }}
+            *Alert:* {{ .Labels.alertname }} - `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.message }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:> *Runbook:* <{{ .Annotations.runbook_url }}|:spiral_note_pad:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
 
 ## Manages Prometheus and Alertmanager components
 prometheusOperator:
@@ -127,45 +127,56 @@ prometheusOperator:
 additionalPrometheusRulesMap:
   rule-name:
     groups:
-      - name: ruleset_1
-        rules:
-          - alert: PythonAppFastApiConsumingMemoryMoreThanRequest
-            expr: avg(container_memory_usage_bytes{pod=~"demo-python-app-fastapi-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="memory",container="demo-python-app-fastapi"}) by (pod)
-            for: 0m
-            labels:
-              severity: critical
-              alertname: "Python-App-Fastapi container is consuming more memory than requested"
-            annotations:
-              summary: Pod {{ $labels.pod }} consuming more memory than requested
-              description: "Pod more memory less than request"
-              message: Pod {{ $labels.pod }} is consuming more memory than requested
+    - name: ruleset_1
+      rules:
+      - alert: PythonAppFastApiConsumingMemoryMoreThanRequest
+        expr: avg(container_memory_usage_bytes{pod=~"demo-python-app-fastapi-deployment-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="memory",container="python-app-fastapi-container"}) by (pod)
+        for: 0m
+        labels:
+          severity: critical
+          alertname: "Python-App-Fastapi container is consuming more memory than requested"
+        annotations:
+          summary: Pod {{ $labels.pod }} consuming more memory than requested
+          description: "Pod more memory less than request"
+          message: Pod {{ $labels.pod }} is consuming more memory than requested
 
-          - alert: PythonAppFastApiConsumingCPUMoreThanRequest
-            expr: avg(container_cpu_usage_bytes{pod=~"demo-python-app-fastapi-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="cpu",container="demo-python-app-fastapi"}) by (pod)
-            for: 0m
-            labels:
-              severity: critical
-              alertname: "Python-App-Fastapi container is consuming more cpu than requested"
-            annotations:
-              summary: Pod {{ $labels.pod }} consuming more cpu than requested
-              description: "Pod more memory less than request"
-              message: Pod {{ $labels.pod }} is consuming more cpu than requested
+      - alert: PythonAppFastApiConsumingCPUMoreThanRequest
+        expr: avg(container_memory_usage_bytes{pod=~"demo-python-app-fastapi-deployment-.*"}) by (pod) > avg(kube_pod_container_resource_requests{resource="memory",container="python-app-fastapi-container"}) by (pod)
+        for: 0m
+        labels:
+          severity: critical
+          alertname: "Python-App-Fastapi container is consuming more cpu than requested"
+        annotations:
+          summary: Pod {{ $labels.pod }} consuming more cpu than requested
+          description: "Pod more memory less than request"
+          message: Pod {{ $labels.pod }} is consuming more cpu than requested
+
+      - alert: PythonAppFastApiConsumingMemoryMoreThanRequestMySQL
+        expr: avg(container_memory_usage_bytes{pod=~"demo-python-app-fastapi-mysql-statefulset-0"}) by (pod) > avg(kube_pod_container_resource_requests{resource="memory",container="python-app-fastapi-mysql"}) by (pod)
+        for: 0m
+        labels:
+          severity: critical
+          alertname: "Python-App-Fastapi-MySQL container is consuming more memory than requested"
+        annotations:
+          summary: Pod {{ $labels.pod }} consuming more memory than requested
+          description: "Pod more memory less than request"
+          message: Pod {{ $labels.pod }} is consuming more memory than requested
 
 grafana:
   plugins:
-    - grafana-piechart-panel
+  - grafana-piechart-panel
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: "default"
-          orgId: 1
-          folder: ""
-          type: file
-          disableDeletion: false
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/default
+      - name: "default"
+        orgId: 1
+        folder: ""
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
   dashboards:
     default:
       node-exporter:
