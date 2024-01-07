@@ -1,255 +1,294 @@
-# keepcoding-devops-liberando-productos-practica-final
-## RafaelTorices
+# LiberandoProducto-RafaelTorices
 
-## Objetivo
+Repository for the subject "Liberando Producto" of the Bootcamp DevOps of KeepCoding.
 
-El objetivo es mejorar un proyecto creado previamente para ponerlo en producción, a través de la adicción de una serie de mejoras.
+## Description
 
-## Proyecto inicial
+This repository contains the code for a sample application with **Python** and **FastAPI** with **MySQL** as database. The application is a simple CRUD of a students database. The application has counters metrics for the endpoints and a health endpoint that are collected by **Prometheus** and visualized in a **Grafana** dashboard.
+The application is containerized with **Docker**, run local with **Docker Compose** and deployed in **Kubernetes** with **Helm**. The application has a **GitHub Actions** workflow to run the tests of the application and another workflow to create a release in GitHub and upload the Docker image to Docker Hub. The application has defined also metrics and alerts in a **Prometheus** and **Grafana** stack to monitoring the application.
 
-El proyecto inicial es un servidor que realiza lo siguiente:
+## Requirements
 
-- Utiliza [FastAPI](https://fastapi.tiangolo.com/) para levantar un servidor en el puerto `8081` e implementa inicialmente dos endpoints:
-  - `/`: Devuelve en formato `JSON` como respuesta `{"health": "ok"}` y un status code 200.
-  - `/health`: Devuelve en formato `JSON` como respuesta `{"message":"Hello World"}` y un status code 200.
+- **Docker**
+- **Docker Compose**
+- **kubectl**
+- **Helm**
+- **minikube** or other Kubernetes cluster
 
-- Se han implementado tests unitarios para el servidor [FastAPI](https://fastapi.tiangolo.com/)
+## Repository structure
 
-- Utiliza [prometheus-client](https://github.com/prometheus/client_python) para arrancar un servidor de métricas en el puerto `8000` y poder registrar métricas, siendo inicialmente las siguientes:
-  - `Counter('server_requests_total', 'Total number of requests to this webserver')`: Contador que se incrementará cada vez que se haga una llamada a alguno de los endpoints implementados por el servidor (inicialmente `/` y `/health`)
-  - `Counter('healthcheck_requests_total', 'Total number of requests to healthcheck')`: Contador que se incrementará cada vez que se haga una llamada al endpoint `/health`.
-  - `Counter('main_requests_total', 'Total number of requests to main endpoint')`: Contador que se incrementará cada vez que se haga una llamada al endpoint `/`.
+- **.github**: Contains the GitHub Actions workflows:
 
-## Software necesario
+  - **release.yaml**: Create a release in GitHub when a tag is pushed and upload the Docker image to Docker Hub.
+  - **test.yaml**: Run the tests of the application when a push is made to the repository or a pull request is made.
 
-Es necesario disponer del siguiente software:
+- **helm**: Contains the Helm chart for the application.
 
-- `Python` en versión `3.8.5` o superior, disponible para los diferentes sistemas operativos en la [página oficial de descargas](https://www.python.org/downloads/release/python-385/)
+- **monitoring**: Contains the Prometheus and Grafana configuration files:
+  
+    - **dashboard.json**: JSON file with the dashboard for Grafana with the metrics of the application.
+    - **values.yaml**: Values file for Prometheus and Grafana, with the configuration of the data sources, alerts, configuration for slack notifications, etc.
 
-- `virtualenv` para poder instalar las librerías necesarias de Python, se puede instalar a través del siguiente comando:
+- **src**: Contains the source code of the application:
 
-    ```sh
-    pip3 install virtualenv
-    ```
+  - **application**: Contains the code of the python application.
+  - **config**: Contains the configuration files for the database application.
+  - **tests**: Contains the tests of the application.
+  - **tools**: Contains the scripts for the GitHub Actions workflows (check that MySQL is running).
 
-    En caso de estar utilizando Linux y el comando anterior diera fallos se debe ejecutar el siguiente comando:
+- **docker-compose.env**: Environment variables for the docker-compose file.
 
-    ```sh
-    sudo apt-get update && sudo apt-get install -y python3.8-venv
-    ```
+- **docker-compose.yaml**: Docker compose file to run the application locally.
 
-- `Docker` para poder arrancar el servidor implementado a través de un contenedor Docker, es posible descargarlo a [través de su página oficial](https://docs.docker.com/get-docker/).
+- **Dockerfile**: Dockerfile to build the Docker image of the application.
 
-## Ejecución de servidor
+- **README.md**: This file.
 
-### Ejecución directa con Python
+- **requirements.txt**: Python requirements install file.
 
-1. Instalación de un virtualenv, **realizarlo sólo en caso de no haberlo realizado previamente**:
-   1. Obtener la versión actual de Python instalada para crear posteriormente un virtualenv:
+## How to run the application locally
 
-        ```sh
-        python3 --version
-        ```
+To run the application locally, you need to have installed **Docker** and **Docker Compose** and run the following command:
 
-        El comando anterior mostrará algo como lo mostrado a continuación:ç
+```
+  docker-compose up -d
+```
 
-        ```sh
-            Python 3.8.13
-        ```
+This command will run the **Python application** in the port _**8000**_ and **FastApi** in the port _**8082**_ and the database **MySQL** in the port _**3306**_.
 
-   2. Crear de virtualenv en la raíz del directorio para poder instalar las librerías necesarias:
+To access the Python application, you can use the following:
 
-       - En caso de en el comando anterior haber obtenido `Python 3.8.*`
+```
+  http://localhost:8000
 
-            ```sh
-            python3.8 -m venv venv
-            ```
-
-       - En caso de en el comando anterior haber obtenido `Python 3.9.*`:
-
-           ```sh
-           python3.9 -m venv venv
-           ```
-
-2. Activar el virtualenv creado en el directorio `venv` en el paso anterior:
-
-     ```sh
-     source venv/bin/activate
-     ```
-
-3. Instalar las librerías necesarias de Python, recogidas en el fichero `requirements.txt`, **sólo en caso de no haber realizado este paso previamente**. Es posible instalarlas a través del siguiente comando:
-
-    ```sh
-    pip3 install -r requirements.txt
-    ```
-
-4. Ejecución del código para arrancar el servidor:
-
-    ```sh
-    python3 src/app.py
-    ```
-
-5. La ejecución del comando anterior debería mostrar algo como lo siguiente:
-
-    ```sh
-    [2022-04-16 09:44:22 +0000] [1] [INFO] Running on http://0.0.0.0:8081 (CTRL + C to quit)
-    ```
-
-### Ejecución a través de un contenedor Docker
-
-1. Crear una imagen Docker con el código necesario para arrancar el servidor:
-
-    ```sh
-    docker build -t simple-server:0.0.1 .
-    ```
-
-2. Arrancar la imagen construida en el paso anterior mapeando los puertos utilizados por el servidor de FastAPI y el cliente de prometheus:
-
-    ```sh
-    docker run -d -p 8000:8000 -p 8081:8081 --name simple-server simple-server:0.0.1
-    ```
-
-3. Obtener los logs del contenedor creado en el paso anterior:
-
-    ```sh
-    docker logs -f simple-server
-    ```
-
-4. La ejecución del comando anterior debería mostrar algo como lo siguiente:
-
-    ```sh
-    [2022-04-16 09:44:22 +0000] [1] [INFO] Running on http://0.0.0.0:8081 (CTRL + C to quit)
-    ```
-
-## Comprobación de endpoints de servidor y métricas
-
-Una vez arrancado el servidor, utilizando cualquier de las formas expuestas en los apartados anteriores, es posible probar las funcionalidades implementadas por el servidor:
-
-- Comprobación de servidor FastAPI, a través de llamadas a los diferentes endpoints:
-
-  - Realizar una petición al endpoint `/`
-
-      ```sh
-      curl -X 'GET' \
-      'http://0.0.0.0:8081/' \
+  curl -X 'GET' \
+      'http://0.0.0.0:8000/' \
       -H 'accept: application/json'
-      ```
+```
 
-      Debería devolver la siguiente respuesta:
+Response:
 
-      ```json
-      {"message":"Hello World"}
-      ```
+```
+  {"message":"Hello World"}
+```
 
-  - Realizar una petición al endpoint `/health`
+To check the Python application is healthy, you can use the following URL:
 
-      ```sh
-      curl -X 'GET' \
-      'http://0.0.0.0:8081/health' \
-      -H 'accept: application/json' -v
-      ```
+```
+  http://localhost:8000/health
 
-      Debería devolver la siguiente respuesta.
+  curl -X 'GET' \
+      'http://0.0.0.0:8000/health'/' \
+      -H 'accept: application/json'
+```
 
-      ```json
-      {"health": "ok"}
-      ```
+Response:
 
-- Comprobación de registro de métricas, si se accede a la URL `http://0.0.0.0:8000` se podrán ver todas las métricas con los valores actuales en ese momento:
+```
+  {"message":"The application is healthy"}
+```
 
-  - Realizar varias llamadas al endpoint `/` y ver como el contador utilizado para registrar las llamadas a ese endpoint, `main_requests_total` ha aumentado, se debería ver algo como lo mostrado a continuación:
+To access the FastApi application, you can use the following URL:
 
-    ```sh
-    # TYPE main_requests_total counter
-    main_requests_total 4.0
-    ```
+```
+  http://localhost:8082/docs
+```
 
-  - Realizar varias llamadas al endpoint `/health` y ver como el contador utilizado para registrar las llamadas a ese endpoint, `healthcheck_requests_total` ha aumentado, se debería ver algo como lo mostrado a continuación:
+Run the following command to stop the application:
 
-    ```sh
-    # TYPE healthcheck_requests_total counter
-    healthcheck_requests_total 26.0
-    ```
+```
+  docker-compose down
+```
 
-  - También se ha credo un contador para el número total de llamadas al servidor `server_requests_total`, por lo que este valor debería ser la suma de los dos anteriores, tal y como se puede ver a continuación:
+## How to run the application in Kubernetes
 
-    ```sh
-    # TYPE server_requests_total counter
-    server_requests_total 30.0
-    ```
+To run the application in Kubernetes, you need to have installed **kubectl** and **Helm** and run the following commands:
 
-## Tests
+```
+  cd helm
+  helm -n python-app-fastapi upgrade demo --wait --install --create-namespace python-app-fastapi
+```
 
-Se ha implementado tests unitarios para probar el servidor FastAPI, estos están disponibles en el archivo `src/tests/app_test.py`.
+This command will run the **Python application** in the port _**8000**_ and **FastApi** in the port _**8082**_ and the database **MySQL** in the port _**3306**_.
 
-Es posible ejecutar los tests de diferentes formas:
+To access the Python application, you can use the following command:
 
-- Ejecución de todos los tests:
+```
+  kubeclt port-forward svc/python-app-fastapi-service 8000:8000
+```
 
-    ```sh
-    pytest
-    ```
+To check the Python application is healthy, you can use the following command:
 
-- Ejecución de todos los tests y mostrar cobertura:
+```
+  curl http://localhost:8000/health
+```
 
-    ```sh
-    pytest --cov
-    ```
+To access the FastApi application, you can use the following command:
 
-- Ejecución de todos los tests y generación de report de cobertura:
+```
+  kubeclt port-forward svc/python-app-fastapi-service 8082:8082
+```
 
-    ```sh
-    pytest --cov --cov-report=html
-    ```
+To access the FastApi application, you can use the following URL:
 
-## Practica a realizar
+```
+  http://localhost:8082/docs
+```
 
-A partir del ejemplo inicial descrito en los apartados anteriores es necesario realizar una serie de mejoras:
+To stop the application, you can run the following command:
 
-Los requirimientos son los siguientes:
+```
+  helm -n python-app-fastapi uninstall python-app-fastapi
+```
 
-# OK - HECHO
-- Añadir por lo menos un nuevo endpoint a los existentes `/` y `/health`, un ejemplo sería `/bye` que devolvería `{"msg": "Bye Bye"}`, para ello será necesario añadirlo en el fichero [src/application/app.py](./src/application/app.py)
+## How to run monitoring
 
-# OK - HECHO
-- Creación de tests unitarios para el nuevo endpoint añadido, para ello será necesario modificar el [fichero de tests](./src/tests/app_test.py)
+To run the monitoring, you need to have installed **kubectl** and **Helm** and run the following commands:
 
-- Opcionalmente creación de helm chart para desplegar la aplicación en Kubernetes, se dispone de un ejemplo de ello en el laboratorio realizado en la clase 3
+```
+  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  helm repo update
+  helm -n monitoring upgrade \
+    --install prometheus \
+    prometheus-community/kube-prometheus-stack \
+    -f monitoring/values.yaml \
+    --create-namespace \
+    --wait --version 55.4.0
+```
 
-- Creación de pipelines de CI/CD en cualquier plataforma (Github Actions, Jenkins, etc) que cuenten por lo menos con las siguientes fases:
+This commands will run **Prometheus** in the port _**9090**_ and **Grafana** in the port _**3000**_.
 
-  - Testing: tests unitarios con cobertura. Se dispone de un [ejemplo con Github Actions en el repositorio actual](./.github/workflows/test.yaml)
+To access the Prometheus application, you can use the following command:
 
-  - Build & Push: creación de imagen docker y push de la misma a cualquier registry válido que utilice alguna estrategia de release para los tags de las vistas en clase, se recomienda GHCR ya incluido en los repositorios de Github. Se dispone de un [ejemplo con Github Actions en el repositorio actual](./.github/workflows/release.yaml)
+```
+  kubectl -n monitoring port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090
+```
 
-- Configuración de monitorización y alertas:
+To access the Grafana application, you can use the following command:
 
-  - Configurar monitorización mediante prometheus en los nuevos endpoints añadidos, por lo menos con la siguiente configuración:
-    - Contador cada vez que se pasa por el/los nuevo/s endpoint/s, tal y como se ha realizado para los endpoints implementados inicialmente
+```
+  kubectl -n monitoring port-forward svc/prometheus-grafana 3000:http-web
+  http://localhost:3000
+```
+> ## Credentials for Grafana:
+    > - **User**: admin
+    > - **Password**: prom-operator
 
-  - Desplegar prometheus a través de Kubernetes mediante minikube y configurar alert-manager para por lo menos las siguientes alarmas, tal y como se ha realizado en el laboratorio del día 3 mediante el chart `kube-prometheus-stack`:
-    - Uso de CPU de un contenedor mayor al del límite configurado, se puede utilizar como base el ejemplo utilizado en el laboratorio 3 para mandar alarmas cuando el contenedor de la aplicación `fast-api` consumía más del asignado mediante request
+To stop the monitoring, you can run the following command:
 
-  - Las alarmas configuradas deberán tener severity high o critical
+```
+  helm -n monitoring uninstall prometheus
+```
 
-  - Crear canal en slack `<nombreAlumno>-prometheus-alarms` y configurar webhook entrante para envío de alertas con alert manager
+## Endpoints of the application Python and FastApi
 
-  - Alert manager estará configurado para lo siguiente:
-    - Mandar un mensaje a Slack en el canal configurado en el paso anterior con las alertas con label "severity" y "critical"
-    - Deberán enviarse tanto alarmas como recuperación de las mismas
-    - Habrá una plantilla configurada para el envío de alarmas
+The application has the following endpoints:
 
-    Para poder comprobar si esta parte funciona se recomienda realizar una prueba de estres, como la realizada en el laboratorio 3 a partir del paso 8.
+- **GET /**: Home of the application.
+- **GET /health**: Check the health of the application.
+- **GET /get_students**: Get all the students.
+- **GET /get_student/{id}**: Get a student by id.
+- **POST /create_student**: Create a student.
+- **DELETE /delete_student/{id}**: Delete a student by id.
 
-  - Creación de un dashboard de Grafana, con por lo menos lo siguiente:
-    - Número de llamadas a los endpoints
-    - Número de veces que la aplicación ha arrancado
 
-## Entregables
+## Testing and workflow GitHub Actions
 
-Se deberá entregar mediante un repositorio realizado a partir del original lo siguiente:
+The application has a GitHub Actions workflow to run the tests of the application when a push is made to the repository or a pull request is made. The workflow is defined in the file **.github/workflows/test.yaml**.
 
-- Código de la aplicación y los tests modificados
-- Ficheros para CI/CD configurados y ejemplos de ejecución válidos
-- Ficheros para despliegue y configuración de prometheus de todo lo relacionado con este, así como el dashboard creado exportado a `JSON` para poder reproducirlo
-- `README.md` donde se explique como se ha abordado cada uno de los puntos requeridos en el apartado anterior, con ejemplos prácticos y guía para poder reproducir cada uno de ellos
+The workflow has the following steps:
+
+- **Checkout**: Checkout the repository.
+- **Run MySQL**: Run MySQL in a Docker container.
+- **Check MySQL**: Check that MySQL is running.
+- **Setup Python**: Setup Python in the workflow.
+- **Install dependencies**: Install the dependencies of the application.
+- **Run tests**: Run the tests of the application wih pytest and coverage.
+- **Destroy MySQL**: Stop MySQL.
+
+## Release and workflow GitHub Actions
+
+The application has a GitHub Actions workflow to create a release in GitHub when a tag is pushed and upload the Docker image to Docker Hub. The workflow is defined in the file **.github/workflows/release.yaml**.
+
+The workflow has the following steps:
+
+- **Checkout**: Checkout the repository.
+- **Login GitHub registry**: Login in GitHub registry.
+- **Login Docker Hub**: Login in Docker Hub.
+- **Create release**: Create a release in GitHub.
+- **Build Docker image**: Build the Docker image of the application.
+- **Push Docker image**: Push the Docker image to Docker Hub.
+
+## Prometheus and Grafana
+
+The application has a Prometheus and Grafana configuration files in the folder **monitoring**.
+
+The alerts of the application are defined in the file **monitoring/values.yaml**:
+
+> NOTE: the alerts are configured to send notifications to a Slack channel. To configure the notifications, you need to create a Slack app and configure the channel and the webhook in the file **monitoring/values.yaml**.
+In this case, the Slack app is configured for slack channel: **#rafaeltorices-prometheus-alarms**.
+
+- **Alerts added to the application**:
+
+  - **PythonAppFastApiConsumingMemoryMoreThanRequest**: Alert when the Python application is consuming more memory than the request.
+  - **PythonAppFastApiConsumingCPUMoreThanRequest**: Alert when the Python application is consuming more CPU than the request.
+  - **PythonAppFastApiConsumingMemoryMoreThanRequestMySQL**: Alert when the MySQL application is consuming more memory than the request.
+
+![Alt text](images/image1.png)
+
+![Alt text](images/image2.png)
+
+![Alt text](images/image3.png)
+
+![Alt text](images/image8.png)
+
+The dashboard of the application is defined in the file **monitoring/dashboard.json**.
+
+This dashboard has the following panels:
+
+- **Counter of requests app Python FastApi init**: Counter of requests of the application to the endpoint /health.
+- **Counter of requests by endpoint**: Counter of requests of the application by endpoint: get_students, get_student, create_student, delete_student.
+- **Metrics of the application**: Metrics of the application: like memory, CPU, etc.
+
+
+> NOTE: for testing metrics, you can use the following command to generate requests to the application and generate stress in the **pod** of the application:
+
+
+```
+  while true; do curl http://localhost:8000/health; sleep 1; done
+
+  or
+
+  apk update && apk add git go
+  git clone https://github.com/jaeg/NodeWrecker.git
+  cd NodeWrecker  
+  go build -o extress main.go
+  ./extress -abuse-memory -escalate -max-duration 10000000
+```
+
+![Alt text](images/image5.png)
+
+![Alt text](images/image6.png)
+
+![Alt text](images/image7.png)
+
+## Sources
+
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [Kubernetes](https://kubernetes.io/)
+- [Helm](https://helm.sh/)
+- [Prometheus](https://prometheus.io/)
+- [Grafana](https://grafana.com/)
+- [GitHub Actions](https://github.com/)
+- [Python](https://www.python.org/)
+- [MySQL](https://www.mysql.com/)
+- [pytest](https://docs.pytest.org/en/6.2.x/)
+- [coverage](https://coverage.readthedocs.io/en/coverage-5.5/)
+- [miniKube](https://minikube.sigs.k8s.io/docs/)
+- [Docker Hub](https://hub.docker.com/)
+
+## Author
+
+> RAFAEL TORICES
