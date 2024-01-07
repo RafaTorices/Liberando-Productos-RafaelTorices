@@ -94,6 +94,15 @@ To access the FastApi application, you can use the following URL:
   http://localhost:8082/docs
 ```
 
+![Alt text](images/image-12.png)
+
+![Alt text](images/image-13.png)
+
+![Alt text](images/image-14.png)
+
+![Alt text](images/image-15.png)
+
+
 Run the following command to stop the application:
 
 ```
@@ -114,7 +123,7 @@ This command will run the **Python application** in the port _**8000**_ and **Fa
 To access the Python application, you can use the following command:
 
 ```
-  kubeclt port-forward svc/python-app-fastapi-service 8000:8000
+  kubectl -n python-app-fastapi port-forward svc/demo-python-app-fastapi-service 8000:8000
 ```
 
 To check the Python application is healthy, you can use the following command:
@@ -126,7 +135,7 @@ To check the Python application is healthy, you can use the following command:
 To access the FastApi application, you can use the following command:
 
 ```
-  kubeclt port-forward svc/python-app-fastapi-service 8082:8082
+  kubectl -n python-app-fastapi port-forward svc/demo-python-app-fastapi-service 8082:8082
 ```
 
 To access the FastApi application, you can use the following URL:
@@ -205,6 +214,20 @@ The workflow has the following steps:
 - **Install dependencies**: Install the dependencies of the application.
 - **Run tests**: Run the tests of the application wih pytest and coverage.
 - **Destroy MySQL**: Stop MySQL.
+
+![Alt text](images/image.png)
+![Alt text](images/image-1.png)
+![Alt text](images/image-2.png)
+![Alt text](images/image-3.png)
+![Alt text](images/image-4.png)
+![Alt text](images/image-5.png)
+![Alt text](images/image-6.png)
+![Alt text](images/image-7.png)
+![Alt text](images/image-8.png)
+![Alt text](images/image-9.png)
+![Alt text](images/image-10.png)
+![Alt text](images/image-11.png)
+
 
 ## Release and workflow GitHub Actions
 
@@ -292,3 +315,31 @@ This dashboard has the following panels:
 ## Author
 
 > RAFAEL TORICES
+
+
+
+
+![Alt text](image.png)
+
+![Alt text](image-1.png)
+
+![Alt text](image-2.png)
+
+![Alt text](image-3.png)
+
+![Alt text](image-4.png)
+
+![Alt text](image-5.png)
+
+![Alt text](image-6.png)
+
+![Alt text](image-7.png)
+
+![Alt text](image-8.png)
+
+![Alt text](image-9.png)
+
+![Alt text](image-10.png)
+
+![Alt text](image-11.png)
+
