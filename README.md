@@ -180,8 +180,10 @@ To access the Grafana application, you can use the following command:
   http://localhost:3000
 ```
 > ## Credentials for Grafana:
-    > - **User**: admin
-    > - **Password**: prom-operator
+  >**User**: admin
+  >
+  >**Password**: prom-operator
+  >
 
 To stop the monitoring, you can run the following command:
 
@@ -216,17 +218,18 @@ The workflow has the following steps:
 - **Destroy MySQL**: Stop MySQL.
 
 ![Alt text](images/image.png)
+
 ![Alt text](images/image-1.png)
+
 ![Alt text](images/image-2.png)
+
 ![Alt text](images/image-3.png)
+
 ![Alt text](images/image-4.png)
+
 ![Alt text](images/image-5.png)
+
 ![Alt text](images/image-6.png)
-![Alt text](images/image-7.png)
-![Alt text](images/image-8.png)
-![Alt text](images/image-9.png)
-![Alt text](images/image-10.png)
-![Alt text](images/image-11.png)
 
 
 ## Release and workflow GitHub Actions
@@ -241,6 +244,17 @@ The workflow has the following steps:
 - **Create release**: Create a release in GitHub.
 - **Build Docker image**: Build the Docker image of the application.
 - **Push Docker image**: Push the Docker image to Docker Hub.
+
+![Alt text](images/image-7.png)
+
+![Alt text](images/image-8.png)
+
+![Alt text](images/image-9.png)
+
+![Alt text](images/image-10.png)
+
+![Alt text](images/image-11.png)
+
 
 ## Prometheus and Grafana
 
