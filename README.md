@@ -53,6 +53,7 @@ To run the application locally, you need to have installed **Docker** and **Dock
 ```
   docker-compose up -d
 ```
+>Note: change the environment variables in the file **docker-compose.env** with your values for the database connection MySQL.
 
 This command will run the **Python application** in the port _**8000**_ and **FastApi** in the port _**8082**_ and the database **MySQL** in the port _**3306**_.
 
@@ -64,6 +65,7 @@ Also, to execute the python application in local, you can run virtual environmen
   pip install -r requirements.txt
   python3 src/app.py
 ```
+>Note: You need to have installed a instance of MySQL in local and change the environment variables in the file **docker-compose.env** with your values for the database connection MySQL.
 
 To access the Python application, you can use the following:
 
