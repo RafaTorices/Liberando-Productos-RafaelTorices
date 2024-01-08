@@ -25,7 +25,7 @@ The application is containerized with **Docker**, run local with **Docker Compos
 - **helm**: Contains the Helm chart for the application.
 
 - **monitoring**: Contains the Prometheus and Grafana configuration files:
-  
+
     - **dashboard.json**: JSON file with the dashboard for Grafana with the metrics of the application.
     - **values.yaml**: Values file for Prometheus and Grafana, with the configuration of the data sources, alerts, configuration for slack notifications, etc.
 
@@ -55,6 +55,15 @@ To run the application locally, you need to have installed **Docker** and **Dock
 ```
 
 This command will run the **Python application** in the port _**8000**_ and **FastApi** in the port _**8082**_ and the database **MySQL** in the port _**3306**_.
+
+Also, to execute the python application in local, you can run virtual environment with the following commands:
+
+```
+  python3 -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+  python src/app.py
+```
 
 To access the Python application, you can use the following:
 
@@ -111,6 +120,16 @@ Run the following command to stop the application:
 
 ## How to run the application in Kubernetes
 
+Is necessary to have installed **minikube** or other Kubernetes cluster. In this case, we are going to use **minikube** with plugin **metrics-server** for the metrics of the application.
+
+```Example cluster minikube:
+
+minikube start --kubernetes-version='v1.28.3' \
+    --cpus=4 \
+    --memory=4096 \
+    --addons="metrics-server,default-storageclass,storage-provisioner" \
+    -p keepcoding
+```
 To run the application in Kubernetes, you need to have installed **kubectl** and **Helm** and run the following commands:
 
 ```
@@ -118,7 +137,7 @@ To run the application in Kubernetes, you need to have installed **kubectl** and
   helm -n python-app-fastapi upgrade demo --wait --install --create-namespace python-app-fastapi
 ```
 
-This command will run the **Python application** in the port _**8000**_ and **FastApi** in the port _**8082**_ and the database **MySQL** in the port _**3306**_.
+This command will run the **Python application server** in the port _**8000**_ and **FastApi** in the port _**8082**_ and the database **MySQL** in the port _**3306**_.
 
 To access the Python application, you can use the following command:
 
@@ -202,6 +221,17 @@ The application has the following endpoints:
 - **POST /create_student**: Create a student.
 - **DELETE /delete_student/{id}**: Delete a student by id.
 
+## Counters metrics of the application Python and FastApi
+
+The application has the following counters metrics:
+
+  - **healthcheck_requests_total**: Counter of requests of the application to the endpoint /health.
+  - **main_requests_total**: Counter of requests of the application by main endpoint /.
+  - **get_students_requests_total**: Counter of requests of the application by endpoint /get_students.
+  - **get_student_requests_total**: Counter of requests of the application by endpoint /get_student.
+  - **create_student_requests_total**: Counter of requests of the application by endpoint /create_student.
+  - **delete_student_requests_total**: Counter of requests of the application by endpoint /delete_student.
+
 
 ## Testing and workflow GitHub Actions
 
@@ -235,6 +265,12 @@ The workflow has the following steps:
 ## Release and workflow GitHub Actions
 
 The application has a GitHub Actions workflow to create a release in GitHub when a tag is pushed and upload the Docker image to Docker Hub. The workflow is defined in the file **.github/workflows/release.yaml**.
+
+```
+git tag vx.x.x
+git push origin vx.x.x
+```
+
 
 The workflow has the following steps:
 
