@@ -62,7 +62,7 @@ Also, to execute the python application in local, you can run virtual environmen
   python3 -m venv venv
   source venv/bin/activate
   pip install -r requirements.txt
-  python src/app.py
+  python3 src/app.py
 ```
 
 To access the Python application, you can use the following:
